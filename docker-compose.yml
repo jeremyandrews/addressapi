@@ -1,0 +1,132 @@
+version: '3'
+
+services:
+  addressapi:
+    container_name: addressapi
+    build:
+      context: .
+      dockerfile: containers/addressapi/Dockerfile
+    volumes:
+      - .:/app
+      - ../../backup:/backup
+      - ../../tmp/addressapi:/tmp
+    ports:
+      - "8001:8001"
+    restart: always
+    networks:
+      - shared
+
+  addressdb:
+    container_name: addressdb
+    build:
+      context: .
+      dockerfile: containers/db/Dockerfile
+    volumes:
+      - ../../addressdb:/var/lib/mysql
+      - ../../backup:/backup
+    ports:
+      - 3306
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=d3vEL
+      - MYSQL_DATABASE=litecoin_testnet4
+      - MYSQL_USER=exchange
+      - MYSQL_PASSWORD=exchange
+    networks:
+      - shared
+
+#  bitcoin:
+#    container_name: bitcoin
+#    build:
+#      context: .
+#      dockerfile: containers/bitcoin/Dockerfile
+#    volumes:
+#    - .:/app
+#    - ../../bitcoin:/root/.bitcoin
+#    - ../../blockchain_data/bitcoin:/app/blockchain_data/bitcoin
+#    - ../../backup:/backup
+#    - ../../tmp/bitcoin:/tmp/bitcoin
+#    ports:
+#    - "8332:8332"
+#    - "8333:8333"
+#    restart: always
+#    networks:
+#    - shared
+#
+  bitcoin-testnet3:
+    container_name: bitcoin-testnet3
+    build:
+      context: .
+      dockerfile: containers/bitcoin-testnet3/Dockerfile
+    volumes:
+      - .:/app
+      - ../../bitcoin-testnet3:/root/.bitcoin/testnet3
+      - ../../blockchain_data/bitcoin_testnet3:/app/blockchain_data/bitcoin_testnet3
+      - ../../backup:/backup
+      - ../../tmp/bitcoin-testnet3:/tmp/bitcoin_testnet3
+    ports:
+      - "18332:18332"
+      - "18333:18333"
+    restart: always
+    networks:
+      - shared
+
+#  litecoin:
+#    container_name: litecoin
+#    build:
+#      context: .
+#      dockerfile: containers/litecoin/Dockerfile
+#    volumes:
+#      - .:/app
+#      - ../../litecoin:/root/.litecoin
+#      - ../../blockchain_data/litecoin:/app/blockchain_data/litecoin
+#      - ../../backup:/backup
+#      - ../../tmp/litecoin:/tmp/litecoin
+#    ports:
+#      - "9332:9332"
+#      - "9333:9333"
+#    restart: always
+#    networks:
+#      - shared
+#
+  litecoin-testnet4:
+    container_name: litecoin-testnet4
+    build:
+      context: .
+      dockerfile: containers/litecoin-testnet4/Dockerfile
+    volumes:
+      - .:/app
+      - ../../litecoin-testnet4:/root/.litecoin/testnet4
+      - ../../blockchain_data/litecoin_testnet4:/app/blockchain_data/litecoin_testnet4
+      - ../../backup:/backup
+      - ../../tmp/litecoin-testnet4:/tmp/litecoin_testnet4
+    ports:
+      - "19332:19332"
+      - "19333:19333"
+    restart: always
+    networks:
+      - shared
+
+  dogecoin-testnet3:
+    container_name: dogecoin-testnet3
+    build:
+      context: .
+      dockerfile: containers/dogecoin-testnet3/Dockerfile
+    volumes:
+      - .:/app
+      - ../../dogecoin-testnet3:/root/.dogecoin/testnet3
+      - ../../blockchain_data/dogecoin_testnet3:/app/blockchain_data/dogecoin_testnet3
+      - ../../backup:/backup
+      - ../../tmp/dogecoin-testnet3:/tmp/dogecoin_testnet3
+    ports:
+      - "22555:22555"
+      - "22556:22556"
+      - "44555:44555"
+      - "44556:44556"
+    restart: always
+    networks:
+    - shared
+
+networks:
+  shared:
+    external: true
